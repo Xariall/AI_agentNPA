@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 import structlog
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
@@ -98,48 +96,13 @@ class HybridRetriever:
             for r in dense_response.points
         ]
 
-        # BM25 search
-        bm25_hits = []
-        if self._bm25_index is not None and self._bm25_corpus is not None:
-            tokenized_query = query.lower().split()
-            bm25_scores = self._bm25_index.get_scores(tokenized_query)
-            scored = list(zip(self._bm25_corpus, bm25_scores))
-            scored.sort(key=lambda x: x[1], reverse=True)
-            bm25_hits = [
-                {**item, "score": float(score)}
-                for item, score in scored[: top_k * 2]
-                if score > 0
-            ]
-
-        # RRF fusion
-        fused = _rrf_fusion(dense_hits, bm25_hits, k=60)
+        # Day 1: Use dense results only (BM25 reranking on Day 2)
         logger.info(
-            "hybrid_search",
+            "dense_search",
             query=query[:80],
-            dense=len(dense_hits),
-            bm25=len(bm25_hits),
-            fused=len(fused),
+            hits=len(dense_hits),
         )
-        return fused[:top_k]
-
-
-def _rrf_fusion(
-    *result_lists: list[dict],
-    k: int = 60,
-) -> list[dict]:
-    """Reciprocal Rank Fusion across multiple result lists."""
-    scores: dict[str, float] = defaultdict(float)
-    docs: dict[str, dict] = {}
-
-    for results in result_lists:
-        for rank, doc in enumerate(results):
-            doc_id = doc["id"]
-            scores[doc_id] += 1.0 / (k + rank + 1)
-            if doc_id not in docs:
-                docs[doc_id] = doc
-
-    sorted_ids = sorted(scores, key=lambda x: scores[x], reverse=True)
-    return [{**docs[did], "score": scores[did]} for did in sorted_ids]
+        return dense_hits[:top_k]
 
 
 # Singleton

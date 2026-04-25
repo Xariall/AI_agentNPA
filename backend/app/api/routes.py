@@ -29,7 +29,7 @@ async def query(request: QueryRequest):
         filters=filters,
     )
 
-    if not chunks or chunks[0]["score"] < settings.min_score_threshold:
+    if not chunks:
         elapsed = (time.time() - start) * 1000
         return QueryResponse(
             answer="В предоставленных документах нет информации по этому вопросу.",
