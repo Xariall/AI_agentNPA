@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "qwen2.5:7b"
 
+    # RAG pipeline tuning
+    retrieval_top_k: int = 20
+    rerank_top_n: int = 5
+    rerank_score_threshold: float = 1.5
+    rrf_k: int = 60
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 

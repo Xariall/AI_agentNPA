@@ -186,6 +186,7 @@ def _make_chunk(
             "doc_type": metadata.get("doc_type", ""),
             "doc_number": metadata.get("doc_number", ""),
             "doc_date": metadata.get("doc_date", ""),
+            "domain": metadata.get("domain", "medical_device"),
             "chapter": chapter,
             "article": article,
             "paragraph": paragraph,

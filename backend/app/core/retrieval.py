@@ -25,7 +25,7 @@ class HybridRetriever:
 
     def load_bm25_from_qdrant(self) -> None:
         """Load all points from Qdrant to build BM25 index."""
-        all_points = []
+        all_points: list[dict] = []
         offset = None
         while True:
             result = self.qdrant.scroll(
@@ -51,7 +51,6 @@ class HybridRetriever:
             offset = next_offset
 
         if all_points:
-            # For BM25 we use the raw_text from metadata
             tokenized = [p["metadata"].get("raw_text", p["text"]).lower().split() for p in all_points]
             self._bm25_index = BM25Okapi(tokenized)
             self._bm25_corpus = all_points
@@ -68,6 +67,64 @@ class HybridRetriever:
             return None
         return Filter(must=conditions)
 
+    def _bm25_search(
+        self,
+        query: str,
+        top_k: int,
+    ) -> list[dict]:
+        """Sparse BM25 search over the full in-memory corpus."""
+        if self._bm25_index is None or self._bm25_corpus is None:
+            return []
+
+        tokenized_query = query.lower().split()
+        scores = self._bm25_index.get_scores(tokenized_query)
+
+        scored: list[tuple[float, int]] = [
+            (float(score), idx)
+            for idx, score in enumerate(scores)
+            if score > 0
+        ]
+        scored.sort(key=lambda x: x[0], reverse=True)
+
+        return [
+            {
+                "id": self._bm25_corpus[idx]["id"],
+                "text": self._bm25_corpus[idx]["text"],
+                "metadata": self._bm25_corpus[idx]["metadata"],
+                "score": score,
+            }
+            for score, idx in scored[:top_k]
+        ]
+
+    @staticmethod
+    def _rrf_fuse(
+        dense_hits: list[dict],
+        sparse_hits: list[dict],
+        k: int = 60,
+        top_k: int = 20,
+    ) -> list[dict]:
+        """Reciprocal Rank Fusion of two ranked lists."""
+        rrf_scores: dict[str, float] = {}
+        doc_map: dict[str, dict] = {}
+
+        for rank, hit in enumerate(dense_hits):
+            doc_id = hit["id"]
+            rrf_scores[doc_id] = rrf_scores.get(doc_id, 0.0) + 1.0 / (k + rank + 1)
+            doc_map[doc_id] = hit
+
+        for rank, hit in enumerate(sparse_hits):
+            doc_id = hit["id"]
+            rrf_scores[doc_id] = rrf_scores.get(doc_id, 0.0) + 1.0 / (k + rank + 1)
+            if doc_id not in doc_map:
+                doc_map[doc_id] = hit
+
+        sorted_ids = sorted(rrf_scores, key=lambda d: rrf_scores[d], reverse=True)
+        results = []
+        for doc_id in sorted_ids[:top_k]:
+            hit = doc_map[doc_id]
+            results.append({**hit, "rrf_score": rrf_scores[doc_id]})
+        return results
+
     def search(
         self,
         query: str,
@@ -77,7 +134,7 @@ class HybridRetriever:
         """Hybrid search: dense (Qdrant) + sparse (BM25) with RRF fusion."""
         query_vec = self.embedder.embed_query(query)
 
-        # Dense search via query_points (qdrant-client >= 1.17)
+        # Dense search via Qdrant
         dense_response = self.qdrant.query_points(
             collection_name=settings.collection_name,
             query=query_vec,
@@ -96,12 +153,23 @@ class HybridRetriever:
             for r in dense_response.points
         ]
 
-        # Day 1: Use dense results only (BM25 reranking on Day 2)
-        logger.info(
-            "dense_search",
-            query=query[:80],
-            hits=len(dense_hits),
-        )
+        # BM25 sparse search — full corpus, no domain filter (reranker handles relevance)
+        bm25_hits = self._bm25_search(query, top_k=top_k * 2)
+
+        if bm25_hits:
+            # Fuse dense + sparse via RRF
+            fused = self._rrf_fuse(dense_hits, bm25_hits, k=settings.rrf_k, top_k=top_k)
+            logger.info(
+                "hybrid_search",
+                query=query[:80],
+                dense=len(dense_hits),
+                bm25=len(bm25_hits),
+                fused=len(fused),
+            )
+            return fused
+
+        # Fallback: dense-only if BM25 unavailable
+        logger.info("dense_search", query=query[:80], hits=len(dense_hits))
         return dense_hits[:top_k]
 
 

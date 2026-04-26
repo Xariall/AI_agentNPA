@@ -5,16 +5,15 @@ from typing import TypedDict
 import structlog
 from langgraph.graph import END, StateGraph
 
+from app.config import settings
 from app.core.generation import generate_answer
+from app.core.query_classifier import classify_query_domain
 from app.core.reranker import rerank
 from app.core.retrieval import get_retriever
 from app.core.verification import verify_citations
 
 logger = structlog.get_logger()
 
-# CrossEncoder raw logits: need higher threshold to reject out-of-scope queries
-# baseline showed 4/6 out-of-scope were incorrectly answered
-RERANK_SCORE_THRESHOLD = 1.5
 MIN_CHUNKS_FOR_ANSWER = 1
 
 ABBREVIATIONS = {
@@ -31,6 +30,7 @@ ABBREVIATIONS = {
 class RAGState(TypedDict, total=False):
     question: str
     filters: dict | None
+    domain: str | None
     rewritten_query: str
     retrieved_chunks: list[dict]
     reranked_chunks: list[dict]
@@ -53,8 +53,31 @@ def query_rewriter_node(state: RAGState) -> dict:
     return {"rewritten_query": rewritten}
 
 
+def classify_domain_node(state: RAGState) -> dict:
+    """Classify query domain. Refuse medicine queries; pass all others to retrieval.
+
+    Note: we intentionally do NOT add a domain= filter to the retrieval step.
+    Metadata domain tagging in the corpus is imperfect (mixed-domain docs,
+    cross-references), so the reranker is a more reliable relevance gate.
+    The classifier's only job here is to reject clearly out-of-domain queries.
+    """
+    query = state["rewritten_query"]
+    domain = classify_query_domain(query)
+
+    if domain == "medicine":
+        logger.info("domain_classified", domain=domain, action="refuse")
+        return {"domain": domain, "refused": True}
+
+    logger.info("domain_classified", domain=domain or "none")
+    return {"domain": domain, "refused": False}
+
+
+def route_after_classify(state: RAGState) -> str:
+    return "refuse" if state.get("refused") else "retrieve"
+
+
 def retrieval_node(state: RAGState) -> dict:
-    """Retrieve chunks from Qdrant using dense search."""
+    """Retrieve chunks using hybrid search (dense + BM25 + RRF)."""
     retriever = get_retriever()
     filters = state.get("filters")
     if filters and not any(filters.values()):
@@ -62,7 +85,7 @@ def retrieval_node(state: RAGState) -> dict:
 
     chunks = retriever.search(
         query=state["rewritten_query"],
-        top_k=30,
+        top_k=settings.retrieval_top_k,
         filters=filters,
     )
     return {"retrieved_chunks": chunks}
@@ -70,7 +93,7 @@ def retrieval_node(state: RAGState) -> dict:
 
 def rerank_node(state: RAGState) -> dict:
     """Rerank retrieved chunks using cross-encoder."""
-    reranked = rerank(state["rewritten_query"], state["retrieved_chunks"], top_k=5)
+    reranked = rerank(state["rewritten_query"], state["retrieved_chunks"], top_k=settings.rerank_top_n)
     return {"reranked_chunks": reranked}
 
 
@@ -82,13 +105,13 @@ def confidence_node(state: RAGState) -> dict:
         return {"confidence": "low", "refused": True}
 
     top_score = chunks[0].get("rerank_score", 0)
-    if top_score < RERANK_SCORE_THRESHOLD:
+    if top_score < settings.rerank_score_threshold:
         return {"confidence": "low", "refused": True}
 
-    # CrossEncoder logits: >2 strong, >0 moderate, <0 weak
-    if top_score > 2.0:
+    # CrossEncoder logits: >3 strong, >1 moderate, <1 weak
+    if top_score > 3.0:
         confidence = "high"
-    elif top_score > 0.0:
+    elif top_score > 1.0:
         confidence = "medium"
     else:
         confidence = "low"
@@ -101,7 +124,7 @@ def route_after_confidence(state: RAGState) -> str:
 
 
 async def generate_node(state: RAGState) -> dict:
-    """Generate answer using Gemini with reranked chunks."""
+    """Generate answer using LLM with reranked chunks."""
     chunks = state["reranked_chunks"]
     answer = await generate_answer(state["question"], chunks)
 
@@ -142,6 +165,7 @@ def build_graph() -> StateGraph:
     g = StateGraph(RAGState)
 
     g.add_node("rewrite", query_rewriter_node)
+    g.add_node("classify_domain", classify_domain_node)
     g.add_node("retrieve", retrieval_node)
     g.add_node("rerank", rerank_node)
     g.add_node("check_confidence", confidence_node)
@@ -150,7 +174,14 @@ def build_graph() -> StateGraph:
     g.add_node("refuse", refuse_node)
 
     g.set_entry_point("rewrite")
-    g.add_edge("rewrite", "retrieve")
+    g.add_edge("rewrite", "classify_domain")
+
+    g.add_conditional_edges(
+        "classify_domain",
+        route_after_classify,
+        {"retrieve": "retrieve", "refuse": "refuse"},
+    )
+
     g.add_edge("retrieve", "rerank")
     g.add_edge("rerank", "check_confidence")
 

@@ -7,10 +7,38 @@ from docling.document_converter import DocumentConverter
 logger = structlog.get_logger()
 
 
+# Filenames that indicate a pure medicine/pharmaceutical document
+_MEDICINE_FILENAME_SIGNALS = [
+    "лекарственн",
+    "фармацевт",
+    "композитн",  # covers joint medicine+МИ orders
+]
+
+
+def _detect_domain(doc_type: str, filename: str) -> str:
+    """
+    Detect document domain from doc_type and filename only.
+
+    Using full-text keywords was unreliable: almost every Приказ references
+    the Кодекс in its preamble, causing 38% of medical-device documents to be
+    mis-tagged as 'general'. We now rely on the structured doc_type field and
+    filename signals instead.
+    """
+    if doc_type == "кодекс":
+        return "general"
+
+    fn_lower = filename.lower()
+    for signal in _MEDICINE_FILENAME_SIGNALS:
+        if signal in fn_lower:
+            return "medicine"
+
+    return "medical_device"
+
+
 def extract_doc_metadata(text: str, filename: str) -> dict:
     """Extract document metadata from the first 2000 chars using regex."""
     header = text[:2000]
-    metadata = {"doc_filename": filename, "doc_type": "", "doc_number": "", "doc_date": ""}
+    metadata = {"doc_filename": filename, "doc_type": "", "doc_number": "", "doc_date": "", "domain": ""}
 
     # Detect document type
     lower = header.lower()
@@ -51,6 +79,8 @@ def extract_doc_metadata(text: str, filename: str) -> dict:
         num_fn = re.search(r"№\s*([\w\-/]+)", filename)
         if num_fn:
             metadata["doc_number"] = num_fn.group(1).strip()
+
+    metadata["domain"] = _detect_domain(metadata["doc_type"], filename)
 
     return metadata
 
