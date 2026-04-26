@@ -23,6 +23,7 @@ class QueryResponse(BaseModel):
     sources: list[Source]
     confidence: str = "medium"
     latency_ms: float = 0.0
+    verification_failed: bool = False
 
 
 class ChunkData(BaseModel):

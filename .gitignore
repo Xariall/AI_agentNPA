@@ -25,3 +25,11 @@ data/raw/*.docx
 
 # uv
 .python-version
+
+# Next.js
+frontend/.next/
+frontend/node_modules/
+frontend/.env.local
+
+# Eval results (large JSON files)
+eval/results/*.json

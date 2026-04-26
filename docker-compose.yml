@@ -23,7 +23,39 @@ services:
         condition: service_healthy
     volumes:
       - ./data:/app/data
-      - ./backend/app:/app/app
+      - ./eval:/app/../eval
+      - hf_cache:/root/.cache/huggingface
+    environment:
+      - QDRANT_HOST=qdrant
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+
+  ingest:
+    build: ./backend
+    profiles:
+      - setup
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - hf_cache:/root/.cache/huggingface
+    env_file:
+      - ./backend/.env
+    environment:
+      - QDRANT_HOST=qdrant
+    command: ["uv", "run", "python", "-m", "scripts.ingest"]
 
 volumes:
   qdrant_storage:
+  hf_cache:

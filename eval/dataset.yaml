@@ -1,0 +1,257 @@
+# NPA Assistant Evaluation Dataset
+# 28 questions: 15 domain, 7 advanced, 6 out-of-scope
+
+# === BASIC DOMAIN QUESTIONS (их 10 вопросов + 5 наших) ===
+
+- id: q001
+  question: "Каким документом определяется класс риска медицинских изделий?"
+  expected_answer_keywords: ["класс риска", "правила", "классификация"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: easy
+  category: classification
+  should_refuse: false
+
+- id: q002
+  question: "Какие документы необходимы для регистрации медицинских изделий в РК?"
+  expected_answer_keywords: ["заявление", "регистрация", "документы", "досье"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: medium
+  category: registration
+  should_refuse: false
+
+- id: q003
+  question: "Каков порядок внесения изменений в регистрационное досье МИ?"
+  expected_answer_keywords: ["изменения", "регистрационное досье", "заявление"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: medium
+  category: registration_changes
+  should_refuse: false
+
+- id: q004
+  question: "Что такое номенклатура медицинских изделий и где она утверждена?"
+  expected_answer_keywords: ["номенклатура", "медицинские изделия"]
+  expected_sources:
+    - doc_filename: "5. Решение №27 от 12.02. 2016 г..docx"
+  difficulty: easy
+  category: nomenclature
+  should_refuse: false
+
+- id: q005
+  question: "Каковы требования к маркировке медицинских изделий?"
+  expected_answer_keywords: ["маркировка", "требования", "медицинские изделия"]
+  expected_sources:
+    - doc_filename: "6. Решение №28 от 12.02.2016 г..docx"
+  difficulty: medium
+  category: labeling
+  should_refuse: false
+
+- id: q006
+  question: "Какие сроки рассмотрения заявления на регистрацию МИ?"
+  expected_answer_keywords: ["срок", "рассмотрение", "регистрация", "рабочих дней"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: easy
+  category: registration
+  should_refuse: false
+
+- id: q007
+  question: "Кто осуществляет экспертизу безопасности и качества МИ?"
+  expected_answer_keywords: ["экспертиза", "безопасность", "качество", "экспертная организация"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: easy
+  category: expertise
+  should_refuse: false
+
+- id: q008
+  question: "Какие основания для приостановления или отмены регистрации МИ?"
+  expected_answer_keywords: ["приостановление", "отмена", "регистрация", "основания"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: medium
+  category: registration
+  should_refuse: false
+
+- id: q009
+  question: "Что регулирует Кодекс о здоровье народа в отношении медицинских изделий?"
+  expected_answer_keywords: ["кодекс", "здоровье", "медицинские изделия", "обращение"]
+  expected_sources:
+    - doc_filename: "15. Кодекс О здоровье народа и системе здравоохранения.docx"
+  difficulty: easy
+  category: general_regulation
+  should_refuse: false
+
+- id: q010
+  question: "Каков порядок проведения оценки качества МИ зарегистрированных в РК?"
+  expected_answer_keywords: ["оценка качества", "правила", "зарегистрированных"]
+  expected_sources:
+    - doc_filename: "16. Приказ МЗ РК от 20.12.2020 г. № ҚР ДСМ-282 2020.docx"
+  difficulty: medium
+  category: quality_assessment
+  should_refuse: false
+
+# === ADDITIONAL DOMAIN QUESTIONS ===
+
+- id: q011
+  question: "Что такое единый реестр медицинских изделий ЕАЭС?"
+  expected_answer_keywords: ["единый реестр", "ЕАЭС", "медицинские изделия"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: easy
+  category: registry
+  should_refuse: false
+
+- id: q012
+  question: "Какие требования к клиническим испытаниям медицинских изделий?"
+  expected_answer_keywords: ["клинические испытания", "требования", "медицинские изделия"]
+  expected_sources:
+    - doc_filename: "8. Решение №29 от 12.02.2016 г..docx"
+  difficulty: hard
+  category: clinical_trials
+  should_refuse: false
+
+- id: q013
+  question: "Как осуществляется мониторинг безопасности МИ после регистрации?"
+  expected_answer_keywords: ["мониторинг", "безопасность", "пострегистрационный"]
+  expected_sources:
+    - doc_filename: "11. Решение №173 от 22.12. 2015 г..docx"
+  difficulty: medium
+  category: safety_monitoring
+  should_refuse: false
+
+- id: q014
+  question: "Какие правила обращения МИ установлены Соглашением о единых принципах?"
+  expected_answer_keywords: ["соглашение", "единые принципы", "обращение"]
+  expected_sources:
+    - doc_filename: "1. Соглашение о единых принципах и правилах обращения МИ.docx"
+  difficulty: easy
+  category: general_regulation
+  should_refuse: false
+
+- id: q015
+  question: "Каков порядок ввоза МИ на территорию ЕАЭС?"
+  expected_answer_keywords: ["ввоз", "территория", "ЕАЭС", "медицинские изделия"]
+  expected_sources:
+    - doc_filename: "3. Решение №174 от 22.12. 2015 г..docx"
+  difficulty: medium
+  category: import
+  should_refuse: false
+
+# === ADVANCED QUESTIONS ===
+
+- id: q016
+  question: "Чем отличается регистрация МИ по правилам ЕАЭС от национальной регистрации в РК?"
+  expected_answer_keywords: ["ЕАЭС", "национальная", "регистрация", "отличие"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+    - doc_filename: "15. Кодекс О здоровье народа и системе здравоохранения.docx"
+  difficulty: hard
+  category: registration
+  should_refuse: false
+
+- id: q017
+  question: "Какие меры принимаются при выявлении несоответствия МИ требованиям качества?"
+  expected_answer_keywords: ["несоответствие", "качество", "меры", "изъятие"]
+  expected_sources:
+    - doc_filename: "16. Приказ МЗ РК от 20.12.2020 г. № ҚР ДСМ-282 2020.docx"
+  difficulty: hard
+  category: quality_assessment
+  should_refuse: false
+
+- id: q018
+  question: "Какие классы риска МИ существуют и как они определяются?"
+  expected_answer_keywords: ["класс", "риск", "1", "2а", "2б", "3", "правила классификации"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: medium
+  category: classification
+  should_refuse: false
+
+- id: q019
+  question: "Какие требования предъявляются к производителям медицинских изделий?"
+  expected_answer_keywords: ["производитель", "требования", "система менеджмента качества"]
+  expected_sources:
+    - doc_filename: "4. Решение №106 от 10.11.2017 г..docx"
+  difficulty: hard
+  category: manufacturing
+  should_refuse: false
+
+- id: q020
+  question: "Каким образом осуществляется идентификация медицинских изделий?"
+  expected_answer_keywords: ["идентификация", "медицинские изделия"]
+  expected_sources:
+    - doc_filename: "10. Решение №38 от 16.05.2016 г..docx"
+  difficulty: medium
+  category: identification
+  should_refuse: false
+
+- id: q021
+  question: "Какие документы подтверждают соответствие МИ требованиям технических регламентов?"
+  expected_answer_keywords: ["соответствие", "технические регламенты", "декларация", "сертификат"]
+  expected_sources:
+    - doc_filename: "14. Решение №42 от 12.02.2016 г..docx"
+  difficulty: hard
+  category: conformity
+  should_refuse: false
+
+- id: q022
+  question: "Каков срок действия регистрационного удостоверения МИ?"
+  expected_answer_keywords: ["срок", "регистрационное удостоверение", "бессрочно"]
+  expected_sources:
+    - doc_filename: "2. Решение №46 от 12.02.2016 г..docx"
+  difficulty: easy
+  category: registration
+  should_refuse: false
+
+# === OUT-OF-SCOPE / NEGATIVE QUESTIONS ===
+
+- id: q023
+  question: "Какая средняя зарплата врача в Казахстане?"
+  expected_answer_keywords: []
+  expected_sources: []
+  difficulty: easy
+  category: out_of_scope
+  should_refuse: true
+
+- id: q024
+  question: "Как зарегистрировать лекарственный препарат в РК?"
+  expected_answer_keywords: []
+  expected_sources: []
+  difficulty: hard
+  category: out_of_scope
+  should_refuse: true
+
+- id: q025
+  question: "Можно ли регистрировать МИ через TikTok?"
+  expected_answer_keywords: []
+  expected_sources: []
+  difficulty: easy
+  category: out_of_scope
+  should_refuse: true
+
+- id: q026
+  question: "Кто является президентом Казахстана?"
+  expected_answer_keywords: []
+  expected_sources: []
+  difficulty: easy
+  category: out_of_scope
+  should_refuse: true
+
+- id: q027
+  question: "Какие санкции предусмотрены за нарушение ПДД в Казахстане?"
+  expected_answer_keywords: []
+  expected_sources: []
+  difficulty: easy
+  category: out_of_scope
+  should_refuse: true
+
+- id: q028
+  question: "Как получить лицензию на продажу алкоголя?"
+  expected_answer_keywords: []
+  expected_sources: []
+  difficulty: easy
+  category: out_of_scope
+  should_refuse: true

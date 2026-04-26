@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  /* Design tokens from НЦЭЛС Figma */
+  --azure-37: #1A56DB;
+  --azure-34: #1A4FCC;
+  --azure-40: #1D5EEA;
+  --azure-51: #3D75E4;
+  --azure-83: #A8C4F5;
+  --grey-97: #F7F8FA;
+  --grey-95: #F2F3F5;
+  --grey-93: #EDEFF2;
+  --grey-91: #E8EAED;
+  --grey-8:  #141414;
+  --yellow-50: #EAB308;
+  --orange-27: #B45309;
+  --white-solid: #FFFFFF;
+  --black-solid: #000000;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--white-solid);
+  color: var(--grey-8);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s step-end infinite;
+}
+
+@keyframes bdot {
+  0%, 60%, 100% { transform: translateY(0);  }
+  30%            { transform: translateY(-5px); }
+}
+.dot1 { display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--azure-37);animation:bdot 1.2s infinite; }
+.dot2 { display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--azure-37);animation:bdot 1.2s 0.15s infinite; }
+.dot3 { display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--azure-37);animation:bdot 1.2s 0.30s infinite; }

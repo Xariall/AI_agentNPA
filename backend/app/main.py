@@ -25,8 +25,21 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="NPA Assistant",
     description="RAG-based assistant for Kazakhstan medical device regulations",
-    version="0.1.0",
+    version="0.2.0",
     lifespan=lifespan,
 )
 
 app.include_router(router, prefix="/api")
+
+
+@app.post("/eval/run")
+async def run_eval(tag: str = "api_run"):
+    """Run evaluation pipeline and return metrics."""
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+    from eval.runner import main as eval_main
+
+    metrics = await eval_main(tag)
+    return {"status": "ok", "metrics": metrics}

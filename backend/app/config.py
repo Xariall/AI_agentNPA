@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     data_dir: str = "./data"
     min_score_threshold: float = 0.3
     top_k: int = 10
+    # LLM backend: "ollama" | "gemini"
+    llm_backend: str = "ollama"
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "qwen2.5:7b"
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
