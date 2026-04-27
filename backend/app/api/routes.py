@@ -15,7 +15,7 @@ router = APIRouter()
 
 _graph = None
 
-EVAL_RESULTS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "eval" / "results"
+EVAL_RESULTS_DIR = Path(__file__).resolve().parent.parent.parent / "eval" / "results"
 
 
 def get_graph():

@@ -1,0 +1,938 @@
+{
+  "metrics": {
+    "retrieval": {
+      "hit_rate@1": 0.045454545454545456,
+      "hit_rate@3": 0.045454545454545456,
+      "hit_rate@5": 0.045454545454545456,
+      "mrr": 0.045454545454545456
+    },
+    "generation": {
+      "keyword_coverage": 0.1277056277056277,
+      "refusal_correctness": 0.7857142857142857,
+      "verification_failure_rate": 0.03571428571428571
+    },
+    "performance": {
+      "latency_p50": 51088.44437500011,
+      "latency_p95": 72605.1729589999,
+      "latency_mean": 55790.00494800039
+    },
+    "by_category": {
+      "classification": {
+        "count": 2,
+        "keyword_coverage": 0.40476190476190477,
+        "refusal_correctness": 1.0
+      },
+      "registration": {
+        "count": 5,
+        "keyword_coverage": 0.1,
+        "refusal_correctness": 1.0
+      },
+      "registration_changes": {
+        "count": 1,
+        "keyword_coverage": 1.0,
+        "refusal_correctness": 1.0
+      },
+      "nomenclature": {
+        "count": 1,
+        "keyword_coverage": 0.5,
+        "refusal_correctness": 1.0
+      },
+      "labeling": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "expertise": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "general_regulation": {
+        "count": 2,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "quality_assessment": {
+        "count": 2,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "registry": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "clinical_trials": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "safety_monitoring": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "import": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "manufacturing": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "identification": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "conformity": {
+        "count": 1,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 1.0
+      },
+      "out_of_scope": {
+        "count": 6,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 0.0
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "count": 13,
+        "keyword_coverage": 0.14583333333333331,
+        "refusal_correctness": 0.6153846153846154
+      },
+      "medium": {
+        "count": 9,
+        "keyword_coverage": 0.18253968253968253,
+        "refusal_correctness": 1.0
+      },
+      "hard": {
+        "count": 6,
+        "keyword_coverage": 0.0,
+        "refusal_correctness": 0.8333333333333334
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "q001",
+      "question": "Каким документом определяется класс риска медицинских изделий?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "класс риска",
+        "правила",
+        "классификация"
+      ],
+      "should_refuse": false,
+      "category": "classification",
+      "difficulty": "easy",
+      "answer": "Класс риска медицинских изделий определяется Правилами, утвержденными уполномоченным органом в соответствии с пунктом 2 статьи 258 Кодекса Республики Казахстан от 7 июля 2020 года «О здоровье народа и системе здравоохранения».\n\nИсточники:\n- [1] Приказ МЗ РК от 15.12. 2020 г. № ҚР ДСМ-281 2020.docx, п. 1\n- [2] Кодекс О здоровье народа и системе здравоохранения.docx, Статья 258",
+      "retrieved_sources": [
+        {
+          "doc_filename": "23. Приказ МЗ РК от 15.12. 2020 г. № ҚР ДСМ-281 2020.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "1",
+          "score": 5.7315,
+          "text_preview": "1. Настоящие правила классификации медицинских изделий в зависимости от степени потенциального риска применения (далее - Правила) разработаны в соответствии с [пунктом 2 статьи 258](http://online.zako"
+        },
+        {
+          "doc_filename": "15. Кодекс О здоровье народа и системе здравоохранения.docx",
+          "doc_type": "кодекс",
+          "doc_number": "196-VIII",
+          "article": "258.",
+          "paragraph": "",
+          "score": 4.7786,
+          "text_preview": "Статья 258. Классификация безопасности и переклассификация безопасности медицинских изделий в зависимости от степени потенциального риска применения\n\n1. Медицинские изделия, применяемые в Республике К"
+        },
+        {
+          "doc_filename": "23. Приказ МЗ РК от 15.12. 2020 г. № ҚР ДСМ-281 2020.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "10",
+          "score": 3.9927,
+          "text_preview": "10. Определение класса медицинского изделия в зависимости от степени потенциального риска применения осуществляется заявителем в соответствии со Способом определения класса медицинских изделий (кроме "
+        },
+        {
+          "doc_filename": "26. Совместный приказ по композитной услуге.docx",
+          "doc_type": "приказ",
+          "doc_number": "30",
+          "article": "",
+          "paragraph": "3",
+          "score": 3.8517,
+          "text_preview": "3. Соответствие класса медицинского изделия в зависимости от степени потенциального риска применения, указанного в заявлении и документах регистрационного досье:\n\n| №   | Класс в соответствии с заявле"
+        },
+        {
+          "doc_filename": "26. Совместный приказ по композитной услуге.docx",
+          "doc_type": "приказ",
+          "doc_number": "30",
+          "article": "",
+          "paragraph": "3",
+          "score": 3.8517,
+          "text_preview": "3. Соответствие класса медицинского изделия в зависимости от степени потенциального риска применения, указанного в заявлении и документах регистрационного досье:\n\n| №   | Класс в соответствии с заявле"
+        }
+      ],
+      "refused": false,
+      "confidence": "high",
+      "verification_failed": true,
+      "latency_ms": 72605.1729589999
+    },
+    {
+      "id": "q002",
+      "question": "Какие документы необходимы для регистрации медицинских изделий в РК?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "заявление",
+        "регистрация",
+        "документы",
+        "досье"
+      ],
+      "should_refuse": false,
+      "category": "registration",
+      "difficulty": "medium",
+      "answer": "Для регистрации медицинских изделий в Республике Казахстан необходимо предоставить следующие документы:\n\n1. Заявление в уполномоченный орган.\n2. Документ, удостоверяющий регистрацию в стране производителе или производственной площадке (регистрационное удостоверение, Сертификат свободной продажи (FreeSale), Сертификат на экспорт) с аутентичным переводом на казахский и русский языки.\n3. Копия разрешительного документа на право производства в стране-производителе с приложением для производителей РК и стран СНГ, копия лицензии на обращение с приборами и установками, генерирующими ионизирующее излучение, для медицинских изделий имеющих источники ионизирующего излучения произведенных в Казахстане с аутентичным переводом на казахский и русский языки.\n4. Информацию о регистрации в стране производителя, выданную государственным уполномоченным органом страны производителя.\n5. Техническое описание, область применения, целевое назначение продукции (информация от производителя).\n6. Наименование продукции и наименование производителя, страны.\n7. Инструкция по применению или эксплуатационный документ, или руководство пользователя.\n8. Фотографическое изображение, отражающее внешний вид продукции, размером не менее 18 x 24 сантиметра.\n\nЭти документы должны быть представлены в государственную экспертную организацию для проведения экспертизы принадлежности продукции к медицинским изделиям и необходимой регистрации.",
+      "retrieved_sources": [
+        {
+          "doc_filename": "15. Кодекс О здоровье народа и системе здравоохранения.docx",
+          "doc_type": "кодекс",
+          "doc_number": "196-VIII",
+          "article": "23.",
+          "paragraph": "1",
+          "score": 9.3989,
+          "text_preview": "1. Государственной регистрации подлежат произведенные в Республике Казахстан, а также ввозимые на ее территорию лекарственные средства и медицинские изделия, включая:\n\n1) лекарственные средства под то"
+        },
+        {
+          "doc_filename": "21. Приказ МЗ РК от 27 января 2021 года № ҚР ДСМ-10.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "44",
+          "score": 8.2261,
+          "text_preview": "44. До проведения экспертизы медицинского изделия при их государственной регистрации по инициативе заявителя государственной экспертной организацией проводится экспертиза принадлежности продукции к ме"
+        },
+        {
+          "doc_filename": "21. Приказ МЗ РК от 27 января 2021 года № ҚР ДСМ-10.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "51",
+          "score": 8.0882,
+          "text_preview": "51. При экспертизе медицинских изделий, производимых производителями Республики Казахстан на основе трансфера технологий путем организации локального производства на основе передачи, внедрения (примен"
+        },
+        {
+          "doc_filename": "21. Приказ МЗ РК от 27 января 2021 года № ҚР ДСМ-10.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "58.44",
+          "score": 8.0178,
+          "text_preview": "----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n|  1."
+        },
+        {
+          "doc_filename": "26. Совместный приказ по композитной услуге.docx",
+          "doc_type": "приказ",
+          "doc_number": "30",
+          "article": "",
+          "paragraph": "12",
+          "score": 7.3073,
+          "text_preview": "12. До подачи заявления на экспертизу лекарственных средств или медицинских изделий, государственную регистрацию, перерегистрацию лекарственных средств или медицинских изделий, внесения изменений в ре"
+        }
+      ],
+      "refused": false,
+      "confidence": "high",
+      "verification_failed": false,
+      "latency_ms": 52021.84145800129
+    },
+    {
+      "id": "q003",
+      "question": "Каков порядок внесения изменений в регистрационное досье МИ?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "изменения",
+        "регистрационное досье",
+        "заявление"
+      ],
+      "should_refuse": false,
+      "category": "registration_changes",
+      "difficulty": "medium",
+      "answer": "Порядок внесения изменений в регистрационное досье медицинского изделия определяется следующими пунктами:\n\n- Заявитель направляет заявление о внесении изменений в уведомительном порядке в уполномоченный орган (экспертную организацию) референтного государства.\n- Прилагаются документы и материалы, необходимые для внесения изменений согласно перечню видов изменений, вносимых в регистрационное досье медицинского изделия.\n\nДокументы и сведения, прилагаемые к заявлению:\n\nа) заявление о внесении изменений;\nб) копия документа, подтверждающего полномочия уполномоченного представителя производителя (при наличии);\nв) документы и сведения о соответствующих изменениях;\nг) отчеты о результатах инспектирования производства (при необходимости);\nд) копии документов, подтверждающих оплату процедуры внесения изменений;\nе) оригинал регистрационного удостоверения (дубликат) (при необходимости).\n\nИсточники:\n- [1] 2. Решение №46 от 12.02.2016 г..docx, п. 87\n- [1] 2. Решение №46 от 12.02.2016 г..docx, п. 88",
+      "retrieved_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "doc_type": "решение",
+          "doc_number": "46",
+          "article": "",
+          "paragraph": "87",
+          "score": 6.6247,
+          "text_preview": "87. Процедура внесения изменений в регистрационное досье в уведомительном порядке применяется в следующих случаях:\n\nа) изменения касаются сроков действия документов, содержащихся в регистрационном дос"
+        },
+        {
+          "doc_filename": "26. Совместный приказ по композитной услуге.docx",
+          "doc_type": "приказ",
+          "doc_number": "30",
+          "article": "",
+          "paragraph": "123",
+          "score": 5.3727,
+          "text_preview": "123. К заявлению о внесении изменений в регистрационное досье медицинского изделия прилагаются документы и материалы, необходимые для внесения изменений, согласно перечню видов изменений, вносимых в р"
+        },
+        {
+          "doc_filename": "21. Приказ МЗ РК от 27 января 2021 года № ҚР ДСМ-10.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "48",
+          "score": 5.276,
+          "text_preview": "48. К заявлению о внесении изменений в регистрационное досье медицинского изделия прилагаются документы и материалы, необходимые для внесения изменений, согласно перечню видов изменений, вносимых в ре"
+        },
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "doc_type": "решение",
+          "doc_number": "46",
+          "article": "",
+          "paragraph": "88",
+          "score": 5.2422,
+          "text_preview": "88. В целях внесения изменений в регистрационное досье в уведомительном порядке заявитель направляет в уполномоченный орган (экспертную организацию) референтного государства следующие документы и свед"
+        },
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "doc_type": "решение",
+          "doc_number": "46",
+          "article": "",
+          "paragraph": "70",
+          "score": 4.6211,
+          "text_preview": "70. В целях внесения изменений в регистрационное досье заявитель направляет в уполномоченный орган (экспертную организацию) референтного государства следующие документы и сведения:\n\nа) заявление о вне"
+        }
+      ],
+      "refused": false,
+      "confidence": "high",
+      "verification_failed": false,
+      "latency_ms": 48377.95808300143
+    },
+    {
+      "id": "q004",
+      "question": "Что такое номенклатура медицинских изделий и где она утверждена?",
+      "expected_sources": [
+        {
+          "doc_filename": "5. Решение №27 от 12.02. 2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "номенклатура",
+        "медицинские изделия"
+      ],
+      "should_refuse": false,
+      "category": "nomenclature",
+      "difficulty": "easy",
+      "answer": "Номенклатура медицинских изделий утверждается Решением Коллегии Евразийской экономической комиссии от 29 декабря 2015 г. № 177.\n\nИсточники:\n- [4] 12. Решение №177 от 29.12.2015 г..docx, п. 6\n- [4] 12. Решение №177 от 29.12.2015 г..docx, п. 7",
+      "retrieved_sources": [
+        {
+          "doc_filename": "22. Приказ МЗ РК от 27.01. 2021 г. № ҚР ДСМ-11.docx",
+          "doc_type": "приказ",
+          "doc_number": "ҚР",
+          "article": "",
+          "paragraph": "3",
+          "score": 3.0123,
+          "text_preview": "3. Маркировка медицинских изделий утверждается государственным органом при государственной регистрации медицинских изделий в Республике Казахстан, проводимой согласно [статье 23](http://online.zakon.k"
+        },
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "doc_type": "решение",
+          "doc_number": "46",
+          "article": "",
+          "paragraph": "6",
+          "score": 2.1412,
+          "text_preview": "6. Вид медицинского изделия в соответствии с номенклатурой медицинских изделий Евразийского экономического союза, [правила](http://online.zakon.kz/Document/?doc_id=35923684) ведения которой утверждены"
+        },
+        {
+          "doc_filename": "15. Кодекс О здоровье народа и системе здравоохранения.docx",
+          "doc_type": "кодекс",
+          "doc_number": "196-VIII",
+          "article": "1.",
+          "paragraph": "1.10",
+          "score": 2.0554,
+          "text_preview": "роводимые с целью определения соответствия медицинских изделий общим требованиям безопасности и эффективности медицинских изделий, требованиям к их маркировке и эксплуатационной документации на них;\n\n"
+        },
+        {
+          "doc_filename": "12. Решение №177  от 29.12. 2015 г..docx",
+          "doc_type": "решение",
+          "doc_number": "177",
+          "article": "",
+          "paragraph": "7",
+          "score": 2.0534,
+          "text_preview": "7. Номенклатура медицинских изделий Союза формируется и ведется оператором номенклатуры медицинских изделий Союза в электронном виде, размещается Евразийской экономической комиссией (далее - Комиссия)"
+        },
+        {
+          "doc_filename": "12. Решение №177  от 29.12. 2015 г..docx",
+          "doc_type": "решение",
+          "doc_number": "177",
+          "article": "",
+          "paragraph": "6",
+          "score": 1.5773,
+          "text_preview": "6. Номенклатура медицинских изделий Союза входит в состав единой системы нормативно-справочной информации Союза, формируемой в соответствии с [пунктами 4](http://online.zakon.kz/Document/?doc_id=31565"
+        }
+      ],
+      "refused": false,
+      "confidence": "high",
+      "verification_failed": false,
+      "latency_ms": 50155.047291998926
+    },
+    {
+      "id": "q005",
+      "question": "Каковы требования к маркировке медицинских изделий?",
+      "expected_sources": [
+        {
+          "doc_filename": "6. Решение №28 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "маркировка",
+        "требования",
+        "медицинские изделия"
+      ],
+      "should_refuse": false,
+      "category": "labeling",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q006",
+      "question": "Какие сроки рассмотрения заявления на регистрацию МИ?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "срок",
+        "рассмотрение",
+        "регистрация",
+        "рабочих дней"
+      ],
+      "should_refuse": false,
+      "category": "registration",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q007",
+      "question": "Кто осуществляет экспертизу безопасности и качества МИ?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "экспертиза",
+        "безопасность",
+        "качество",
+        "экспертная организация"
+      ],
+      "should_refuse": false,
+      "category": "expertise",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q008",
+      "question": "Какие основания для приостановления или отмены регистрации МИ?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "приостановление",
+        "отмена",
+        "регистрация",
+        "основания"
+      ],
+      "should_refuse": false,
+      "category": "registration",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q009",
+      "question": "Что регулирует Кодекс о здоровье народа в отношении медицинских изделий?",
+      "expected_sources": [
+        {
+          "doc_filename": "15. Кодекс О здоровье народа и системе здравоохранения.docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "кодекс",
+        "здоровье",
+        "медицинские изделия",
+        "обращение"
+      ],
+      "should_refuse": false,
+      "category": "general_regulation",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q010",
+      "question": "Каков порядок проведения оценки качества МИ зарегистрированных в РК?",
+      "expected_sources": [
+        {
+          "doc_filename": "16. Приказ МЗ РК от 20.12.2020 г. № ҚР ДСМ-282 2020.docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "оценка качества",
+        "правила",
+        "зарегистрированных"
+      ],
+      "should_refuse": false,
+      "category": "quality_assessment",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q011",
+      "question": "Что такое единый реестр медицинских изделий ЕАЭС?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "единый реестр",
+        "ЕАЭС",
+        "медицинские изделия"
+      ],
+      "should_refuse": false,
+      "category": "registry",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q012",
+      "question": "Какие требования к клиническим испытаниям медицинских изделий?",
+      "expected_sources": [
+        {
+          "doc_filename": "8. Решение №29 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "клинические испытания",
+        "требования",
+        "медицинские изделия"
+      ],
+      "should_refuse": false,
+      "category": "clinical_trials",
+      "difficulty": "hard",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q013",
+      "question": "Как осуществляется мониторинг безопасности МИ после регистрации?",
+      "expected_sources": [
+        {
+          "doc_filename": "11. Решение №173 от 22.12. 2015 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "мониторинг",
+        "безопасность",
+        "пострегистрационный"
+      ],
+      "should_refuse": false,
+      "category": "safety_monitoring",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q014",
+      "question": "Какие правила обращения МИ установлены Соглашением о единых принципах?",
+      "expected_sources": [
+        {
+          "doc_filename": "1. Соглашение о единых принципах и правилах обращения МИ.docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "соглашение",
+        "единые принципы",
+        "обращение"
+      ],
+      "should_refuse": false,
+      "category": "general_regulation",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q015",
+      "question": "Каков порядок ввоза МИ на территорию ЕАЭС?",
+      "expected_sources": [
+        {
+          "doc_filename": "3. Решение №174 от 22.12. 2015 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "ввоз",
+        "территория",
+        "ЕАЭС",
+        "медицинские изделия"
+      ],
+      "should_refuse": false,
+      "category": "import",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q016",
+      "question": "Чем отличается регистрация МИ по правилам ЕАЭС от национальной регистрации в РК?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        },
+        {
+          "doc_filename": "15. Кодекс О здоровье народа и системе здравоохранения.docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "ЕАЭС",
+        "национальная",
+        "регистрация",
+        "отличие"
+      ],
+      "should_refuse": false,
+      "category": "registration",
+      "difficulty": "hard",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q017",
+      "question": "Какие меры принимаются при выявлении несоответствия МИ требованиям качества?",
+      "expected_sources": [
+        {
+          "doc_filename": "16. Приказ МЗ РК от 20.12.2020 г. № ҚР ДСМ-282 2020.docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "несоответствие",
+        "качество",
+        "меры",
+        "изъятие"
+      ],
+      "should_refuse": false,
+      "category": "quality_assessment",
+      "difficulty": "hard",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q018",
+      "question": "Какие классы риска МИ существуют и как они определяются?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "класс",
+        "риск",
+        "1",
+        "2а",
+        "2б",
+        "3",
+        "правила классификации"
+      ],
+      "should_refuse": false,
+      "category": "classification",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q019",
+      "question": "Какие требования предъявляются к производителям медицинских изделий?",
+      "expected_sources": [
+        {
+          "doc_filename": "4. Решение №106 от 10.11.2017 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "производитель",
+        "требования",
+        "система менеджмента качества"
+      ],
+      "should_refuse": false,
+      "category": "manufacturing",
+      "difficulty": "hard",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q020",
+      "question": "Каким образом осуществляется идентификация медицинских изделий?",
+      "expected_sources": [
+        {
+          "doc_filename": "10. Решение №38 от 16.05.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "идентификация",
+        "медицинские изделия"
+      ],
+      "should_refuse": false,
+      "category": "identification",
+      "difficulty": "medium",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q021",
+      "question": "Какие документы подтверждают соответствие МИ требованиям технических регламентов?",
+      "expected_sources": [
+        {
+          "doc_filename": "14. Решение №42 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "соответствие",
+        "технические регламенты",
+        "декларация",
+        "сертификат"
+      ],
+      "should_refuse": false,
+      "category": "conformity",
+      "difficulty": "hard",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q022",
+      "question": "Каков срок действия регистрационного удостоверения МИ?",
+      "expected_sources": [
+        {
+          "doc_filename": "2. Решение №46 от 12.02.2016 г..docx",
+          "article": null
+        }
+      ],
+      "expected_keywords": [
+        "срок",
+        "регистрационное удостоверение",
+        "бессрочно"
+      ],
+      "should_refuse": false,
+      "category": "registration",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q023",
+      "question": "Какая средняя зарплата врача в Казахстане?",
+      "expected_sources": [],
+      "expected_keywords": [],
+      "should_refuse": true,
+      "category": "out_of_scope",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q024",
+      "question": "Как зарегистрировать лекарственный препарат в РК?",
+      "expected_sources": [],
+      "expected_keywords": [],
+      "should_refuse": true,
+      "category": "out_of_scope",
+      "difficulty": "hard",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q025",
+      "question": "Можно ли регистрировать МИ через TikTok?",
+      "expected_sources": [],
+      "expected_keywords": [],
+      "should_refuse": true,
+      "category": "out_of_scope",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q026",
+      "question": "Кто является президентом Казахстана?",
+      "expected_sources": [],
+      "expected_keywords": [],
+      "should_refuse": true,
+      "category": "out_of_scope",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q027",
+      "question": "Какие санкции предусмотрены за нарушение ПДД в Казахстане?",
+      "expected_sources": [],
+      "expected_keywords": [],
+      "should_refuse": true,
+      "category": "out_of_scope",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    },
+    {
+      "id": "q028",
+      "question": "Как получить лицензию на продажу алкоголя?",
+      "expected_sources": [],
+      "expected_keywords": [],
+      "should_refuse": true,
+      "category": "out_of_scope",
+      "difficulty": "easy",
+      "answer": "ERROR: [Errno 32] Broken pipe",
+      "retrieved_sources": [],
+      "refused": false,
+      "confidence": "error",
+      "verification_failed": false,
+      "latency_ms": 0
+    }
+  ]
+}

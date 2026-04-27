@@ -27,5 +27,6 @@ print('Models ready.')"
 
 COPY app/ ./app/
 COPY scripts/ ./scripts/
+COPY eval/ ./eval/
 
 CMD ["sh", "-c", "/app/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

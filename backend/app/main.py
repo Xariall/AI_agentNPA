@@ -56,10 +56,6 @@ app.include_router(router, prefix="/api")
 @app.post("/eval/run")
 async def run_eval(tag: str = "api_run"):
     """Run evaluation pipeline and return metrics."""
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
     from eval.runner import main as eval_main
 
     metrics = await eval_main(tag)

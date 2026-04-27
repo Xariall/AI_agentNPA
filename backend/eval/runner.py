@@ -2,7 +2,7 @@
 Eval runner: run all questions through the RAG pipeline and compute metrics.
 
 Usage:
-    cd /Users/asanaliesmagambetov/Documents/AI_agentNPA
+    cd /Users/asanaliesmagambetov/Documents/AI_agentNPA/backend
     uv run python eval/runner.py baseline
 """
 
@@ -15,10 +15,9 @@ from statistics import mean, median
 
 import yaml
 
-# Add project root and backend to path
+# backend/ is the root — add it to path so `app` and `eval` are importable
 _root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_root))
-sys.path.insert(0, str(_root / "backend"))
 
 from app.graph.rag_graph import build_graph
 from eval.metrics import (
