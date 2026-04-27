@@ -14,6 +14,8 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
+# Cache-bust: always rebuild model download and app layers
+ARG REBUILD_MODELS=1
 # Pre-download ML models so runtime has no download spikes (avoids OOM kills)
 RUN /app/.venv/bin/python -c "\
 from sentence_transformers import SentenceTransformer, CrossEncoder; \
