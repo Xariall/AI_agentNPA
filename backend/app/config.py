@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     qdrant_host: str = "localhost"
     qdrant_port: int = 6333
+    qdrant_api_key: str = ""
     embedding_model: str = "intfloat/multilingual-e5-large"
     collection_name: str = "npa"
     data_dir: str = "./data"
@@ -16,10 +17,12 @@ class Settings(BaseSettings):
     ollama_model: str = "qwen2.5:7b"
 
     # RAG pipeline tuning
-    retrieval_top_k: int = 20
-    rerank_top_n: int = 5
-    rerank_score_threshold: float = 1.5
+    retrieval_top_k: int = 50
+    rerank_top_n: int = 20
+    rerank_score_threshold: float = 1.0
     rrf_k: int = 60
+    # Set ENABLE_RERANKING=false to skip cross-encoder (saves ~120MB RAM on memory-constrained deployments)
+    enable_reranking: bool = True
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

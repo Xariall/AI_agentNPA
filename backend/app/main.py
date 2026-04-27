@@ -6,6 +6,7 @@ import structlog
 from fastapi import FastAPI
 
 from app.api.routes import router
+from app.config import settings
 from app.core.reranker import get_reranker
 from app.core.retrieval import get_retriever
 
@@ -32,11 +33,14 @@ async def _load_bm25():
     except Exception:
         logger.exception("bm25_load_error", msg="Failed to load BM25 index — BM25 search will be unavailable")
     # Pre-warm the reranker so it's in RAM before the first request arrives
-    try:
-        get_reranker()
-        logger.info("reranker_prewarm_complete")
-    except Exception:
-        logger.exception("reranker_prewarm_error", msg="Failed to pre-warm reranker")
+    if settings.enable_reranking:
+        try:
+            get_reranker()
+            logger.info("reranker_prewarm_complete")
+        except Exception:
+            logger.exception("reranker_prewarm_error", msg="Failed to pre-warm reranker")
+    else:
+        logger.info("reranker_disabled", msg="Reranking disabled via ENABLE_RERANKING=false")
 
 
 app = FastAPI(
