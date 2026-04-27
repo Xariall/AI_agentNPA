@@ -15,7 +15,7 @@ logger = structlog.get_logger()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Load BM25 index from Qdrant on startup (deferred to background)."""
-    logger.info("startup", msg=f"App starting on port {os.getenv('PORT', '8000')}...")
+    logger.info("startup", msg=f"App starting on port {os.getenv('PORT', '8000')}...", build="v2-L6-reranker")
     # Load BM25 in background so health check is immediately available
     asyncio.create_task(_load_bm25())
     yield
