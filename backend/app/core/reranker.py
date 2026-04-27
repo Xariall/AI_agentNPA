@@ -3,7 +3,7 @@ from sentence_transformers import CrossEncoder
 
 logger = structlog.get_logger()
 
-RERANKER_MODEL = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+RERANKER_MODEL = "cross-encoder/mmarco-mMiniLMv2-L6-H384-v1"
 
 _reranker: CrossEncoder | None = None
 
@@ -23,6 +23,7 @@ def rerank(query: str, chunks: list[dict], top_k: int = 5) -> list[dict]:
         return []
 
     reranker = get_reranker()
+
     pairs = [[query, c.get("metadata", {}).get("raw_text", c.get("text", ""))] for c in chunks]
     scores = reranker.predict(pairs)
 

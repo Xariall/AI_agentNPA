@@ -1,13 +1,29 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 WORKDIR /app
+
+# System deps for opencv and docling
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
+# Pre-download ML models so runtime has no download spikes (avoids OOM kills)
+RUN /app/.venv/bin/python -c "\
+from sentence_transformers import SentenceTransformer, CrossEncoder; \
+print('Downloading intfloat/multilingual-e5-small...'); \
+SentenceTransformer('intfloat/multilingual-e5-small'); \
+print('Downloading cross-encoder/mmarco-mMiniLMv2-L6-H384-v1...'); \
+CrossEncoder('cross-encoder/mmarco-mMiniLMv2-L6-H384-v1'); \
+print('Models ready.')"
+
 COPY app/ ./app/
 COPY scripts/ ./scripts/
 
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "/app/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

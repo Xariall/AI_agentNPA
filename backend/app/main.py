@@ -1,9 +1,12 @@
+import asyncio
+import os
 from contextlib import asynccontextmanager
 
 import structlog
 from fastapi import FastAPI
 
 from app.api.routes import router
+from app.core.reranker import get_reranker
 from app.core.retrieval import get_retriever
 
 logger = structlog.get_logger()
@@ -11,15 +14,29 @@ logger = structlog.get_logger()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load BM25 index from Qdrant on startup."""
-    logger.info("startup", msg="Loading BM25 index from Qdrant...")
+    """Load BM25 index from Qdrant on startup (deferred to background)."""
+    logger.info("startup", msg=f"App starting on port {os.getenv('PORT', '8000')}...")
+    # Load BM25 in background so health check is immediately available
+    asyncio.create_task(_load_bm25())
+    yield
+
+
+async def _load_bm25():
+    """Load BM25 index and pre-warm reranker in the background after startup."""
+    await asyncio.sleep(5)  # Give uvicorn a moment to bind
+    logger.info("bm25_load_start", msg="Loading BM25 index from Qdrant...")
     try:
         retriever = get_retriever()
         retriever.load_bm25_from_qdrant()
-        logger.info("startup_complete", msg="BM25 index loaded")
+        logger.info("bm25_load_complete", msg="BM25 index loaded")
     except Exception:
-        logger.exception("startup_error", msg="Failed to load BM25 index — BM25 search will be unavailable")
-    yield
+        logger.exception("bm25_load_error", msg="Failed to load BM25 index — BM25 search will be unavailable")
+    # Pre-warm the reranker so it's in RAM before the first request arrives
+    try:
+        get_reranker()
+        logger.info("reranker_prewarm_complete")
+    except Exception:
+        logger.exception("reranker_prewarm_error", msg="Failed to pre-warm reranker")
 
 
 app = FastAPI(
