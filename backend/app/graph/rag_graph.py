@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import asyncio
 from typing import TypedDict
 
 import structlog
 from langgraph.graph import END, StateGraph
 
 from app.config import settings
-from app.core.generation import generate_answer, generate_query_variants
+from app.core.generation import generate_answer, generate_hypothetical_doc, generate_query_variants
 from app.core.query_classifier import classify_query_domain
 from app.core.reranker import rerank
 from app.core.retrieval import get_retriever
@@ -39,6 +40,7 @@ class RAGState(TypedDict, total=False):
     domain: str | None
     rewritten_query: str
     query_variants: list[str]
+    hypothetical_doc: str
     retrieved_chunks: list[dict]
     reranked_chunks: list[dict]
     confidence: str
@@ -88,9 +90,11 @@ def route_after_classify(state: RAGState) -> str:
 
 
 async def multi_query_node(state: RAGState) -> dict:
-    """Generate alternative query formulations for broader retrieval coverage."""
-    variants = await generate_query_variants(state["rewritten_query"])
-    return {"query_variants": variants}
+    """Generate query variants and a HyDE passage in parallel for broader retrieval coverage."""
+    variants_task = generate_query_variants(state["rewritten_query"])
+    hyde_task = generate_hypothetical_doc(state["rewritten_query"])
+    variants, hypothetical_doc = await asyncio.gather(variants_task, hyde_task)
+    return {"query_variants": variants, "hypothetical_doc": hypothetical_doc}
 
 
 def retrieval_node(state: RAGState) -> dict:
@@ -107,6 +111,7 @@ def retrieval_node(state: RAGState) -> dict:
         queries=all_queries,
         top_k=settings.retrieval_top_k,
         filters=filters,
+        hypothetical_doc=state.get("hypothetical_doc", ""),
     )
     return {"retrieved_chunks": chunks}
 
@@ -133,10 +138,10 @@ def confidence_node(state: RAGState) -> dict:
     if top_score < settings.rerank_score_threshold:
         return {"confidence": "low", "refused": True}
 
-    # CrossEncoder logits: >3 strong, >1 moderate, <1 weak
-    if top_score > 3.0:
+    # BGE reranker: 0-1 sigmoid scale (>0.7 strong, >0.3 moderate, <0.3 weak)
+    if top_score > 0.7:
         confidence = "high"
-    elif top_score > 1.0:
+    elif top_score > 0.3:
         confidence = "medium"
     else:
         confidence = "low"

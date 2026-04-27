@@ -91,3 +91,107 @@ async def generate_answer(query: str, chunks: list[dict]) -> str:
     if settings.llm_backend == "ollama":
         return await _generate_ollama(query, context)
     return await _generate_gemini(query, context)
+
+
+_HYDE_PROMPT = """Ты — эксперт по нормативным правовым актам в сфере медицинских изделий Казахстана и ЕАЭС.
+
+Напиши короткий фрагмент текста (2-4 предложения), который мог бы содержаться в официальном нормативном документе и отвечал бы на следующий вопрос. Пиши в стиле официального юридического документа на русском языке. Не упоминай вопрос — пиши только сам текст документа.
+
+Вопрос: {query}"""
+
+
+async def generate_hypothetical_doc(query: str) -> str:
+    """Generate a hypothetical document passage (HyDE) for the query."""
+    prompt = _HYDE_PROMPT.format(query=query)
+
+    try:
+        if settings.llm_backend == "ollama":
+            url = f"{settings.ollama_base_url}/api/chat"
+            payload = {
+                "model": settings.ollama_model,
+                "messages": [{"role": "user", "content": prompt}],
+                "stream": False,
+                "options": {"temperature": 0.2},
+            }
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                response = await client.post(url, json=payload)
+                response.raise_for_status()
+                text = response.json()["message"]["content"].strip()
+        else:
+            client = genai.Client(api_key=settings.gemini_api_key)
+            text = ""
+            for model_name in GEMINI_MODELS:
+                try:
+                    resp = await client.aio.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                        config={"temperature": 0.2},
+                    )
+                    text = (resp.text or "").strip()
+                    break
+                except genai_errors.ServerError:
+                    await asyncio.sleep(RETRY_DELAY)
+
+        logger.info("hyde_generated", query=query[:60], passage_len=len(text))
+        return text
+
+    except Exception as e:
+        logger.warning("hyde_failed", error=str(e)[:100])
+        return ""
+
+
+_MULTI_QUERY_PROMPT = """Ты помогаешь улучшить поиск по нормативным правовым актам Казахстана.
+
+Задание: напиши 3 альтернативные формулировки вопроса на РУССКОМ ЯЗЫКЕ, используя разные юридические термины и синонимы. Все формулировки должны быть строго на русском языке.
+Каждую формулировку напиши на отдельной строке. Не нумеруй строки. Не добавляй пояснений.
+
+Вопрос: {query}"""
+
+
+async def generate_query_variants(query: str) -> list[str]:
+    """Generate alternative query formulations for multi-query retrieval."""
+    prompt = _MULTI_QUERY_PROMPT.format(query=query)
+
+    try:
+        if settings.llm_backend == "ollama":
+            url = f"{settings.ollama_base_url}/api/chat"
+            payload = {
+                "model": settings.ollama_model,
+                "messages": [{"role": "user", "content": prompt}],
+                "stream": False,
+                "options": {"temperature": 0.3},
+            }
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                response = await client.post(url, json=payload)
+                response.raise_for_status()
+                text = response.json()["message"]["content"]
+        else:
+            client = genai.Client(api_key=settings.gemini_api_key)
+            text = ""
+            for model_name in GEMINI_MODELS:
+                try:
+                    resp = await client.aio.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                        config={"temperature": 0.3},
+                    )
+                    text = resp.text or ""
+                    break
+                except genai_errors.ServerError:
+                    await asyncio.sleep(RETRY_DELAY)
+
+        import re as _re
+        variants = [line.strip() for line in text.strip().splitlines() if line.strip()]
+        # Keep only lines that are purely Russian (Cyrillic + common punctuation, no CJK/Arabic/etc.)
+        variants = [
+            v for v in variants
+            if _re.search(r"[а-яА-ЯёЁ]", v)
+            and not _re.search(r"[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0600-\u06ff]", v)
+            and v != query
+        ][:3]
+        logger.info("query_variants_generated", original=query[:60], count=len(variants))
+        return variants
+
+    except Exception as e:
+        logger.warning("query_variants_failed", error=str(e)[:100])
+        return []

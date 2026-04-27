@@ -21,8 +21,8 @@ RUN /app/.venv/bin/python -c "\
 from sentence_transformers import SentenceTransformer, CrossEncoder; \
 print('Downloading intfloat/multilingual-e5-small...'); \
 SentenceTransformer('intfloat/multilingual-e5-small'); \
-print('Downloading cross-encoder/mmarco-mMiniLMv2-L12-H384-v1...'); \
-CrossEncoder('cross-encoder/mmarco-mMiniLMv2-L12-H384-v1'); \
+print('Downloading BAAI/bge-reranker-v2-m3...'); \
+CrossEncoder('BAAI/bge-reranker-v2-m3'); \
 print('Models ready.')"
 
 COPY app/ ./app/

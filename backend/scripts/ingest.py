@@ -63,7 +63,12 @@ def main():
 
     # Step 4: Upload to Qdrant
     logger.info("step_4", msg="Uploading to Qdrant...")
-    qdrant = QdrantClient(host=settings.qdrant_host, port=settings.qdrant_port)
+    qdrant = QdrantClient(
+        host=settings.qdrant_host,
+        port=settings.qdrant_port,
+        api_key=settings.qdrant_api_key or None,
+        https=bool(settings.qdrant_api_key),
+    )
 
     # Recreate collection
     collections = [c.name for c in qdrant.get_collections().collections]

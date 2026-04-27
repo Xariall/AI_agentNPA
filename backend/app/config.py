@@ -19,7 +19,8 @@ class Settings(BaseSettings):
     # RAG pipeline tuning
     retrieval_top_k: int = 50
     rerank_top_n: int = 20
-    rerank_score_threshold: float = 1.0
+    # BGE reranker outputs 0-1 (sigmoid); mmarco outputs raw logits — adjust accordingly
+    rerank_score_threshold: float = 0.05
     rrf_k: int = 60
     # Set ENABLE_RERANKING=false to skip cross-encoder (saves ~120MB RAM on memory-constrained deployments)
     enable_reranking: bool = True

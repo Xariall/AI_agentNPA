@@ -3,7 +3,7 @@ from sentence_transformers import CrossEncoder
 
 logger = structlog.get_logger()
 
-RERANKER_MODEL = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
 
 _reranker: CrossEncoder | None = None
 

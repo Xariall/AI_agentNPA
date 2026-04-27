@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import "./ui.css";
 import { Sidebar } from "./components/sidebar";
 import { ChatProvider } from "./context/chat-context";
 
