@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     # Set ENABLE_RERANKING=false to skip cross-encoder (saves ~120MB RAM on memory-constrained deployments)
     enable_reranking: bool = True
 
+    # Telegram bot
+    telegram_bot_token: str = ""
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 

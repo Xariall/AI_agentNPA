@@ -12,7 +12,7 @@ def get_reranker() -> CrossEncoder:
     global _reranker
     if _reranker is None:
         logger.info("loading_reranker", model=RERANKER_MODEL)
-        _reranker = CrossEncoder(RERANKER_MODEL)
+        _reranker = CrossEncoder(RERANKER_MODEL, device="cpu")
         logger.info("reranker_loaded")
     return _reranker
 
